@@ -1,8 +1,10 @@
 FROM maven:3.9.6-eclipse-temurin-17 as build
 
-COPY pom.xml ./pom.xml
+RUN mkdir -p /root/.m2
+COPY pom.xml .
 COPY src ./src
-RUN mvn clean install
+COPY settings.xml /root/.m2/settings.xml
+RUN mvn -s /root/.m2/settings.xml clean install
 
 FROM eclipse-temurin:17
 WORKDIR ./app
